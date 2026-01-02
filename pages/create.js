@@ -1,84 +1,91 @@
 import { useState } from "react";
-import { collection, query, where, getDocs, updateDoc, doc } from "firebase/firestore";
-import { db } from "../lib/firebase";
 
 export default function Create() {
-  const [email, setEmail] = useState("");
-  const [verified, setVerified] = useState(false);
-  const [loading, setLoading] = useState(false);
-
-  async function verifyPayment() {
-    setLoading(true);
-
-    const q = query(
-      collection(db, "payments"),
-      where("email", "==", email),
-      where("used", "==", false)
-    );
-
-    const snapshot = await getDocs(q);
-
-    if (snapshot.empty) {
-      alert("No valid payment found ❌");
-      setLoading(false);
-      return;
-    }
-
-    // mark payment as used
-    const paymentDoc = snapshot.docs[0];
-    await updateDoc(doc(db, "payments", paymentDoc.id), {
-      used: true
-    });
-
-    setVerified(true);
-    setLoading(false);
-  }
-
-  if (!verified) {
-    return (
-      <div style={{
-        minHeight: "100vh",
-        padding: "40px",
-        background: "#f7f2ee",
-        fontFamily: "Georgia, serif"
-      }}>
-        <h2>🔐 Verify Payment</h2>
-
-        <input
-          placeholder="Enter your payment email"
-          value={email}
-          onChange={e => setEmail(e.target.value)}
-          style={{ padding: "10px", width: "300px" }}
-        />
-
-        <br /><br />
-
-        <button
-          onClick={verifyPayment}
-          disabled={loading}
-          style={{
-            padding: "10px 20px",
-            background: "#d8b4a0",
-            border: "none",
-            borderRadius: "10px",
-            cursor: "pointer"
-          }}
-        >
-          {loading ? "Checking..." : "Unlock Scrapbook"}
-        </button>
-      </div>
-    );
-  }
+  const [pages] = useState([
+    { id: 1, quote: "To the one who makes every day brighter ✨" },
+    { id: 2, quote: "Another year of memories, laughs & love 💕" }
+  ]);
 
   return (
-    <div style={{
-      minHeight: "100vh",
-      padding: "40px",
-      background: "#fdf6f0",
-      fontFamily: "Georgia, serif"
-    }}>
-      <h2>📖 Scrapbook Creator</h2>
-      <p>✨ Access granted. Start creating your scrapbook.</p>
+    <div style={styles.bg}>
+      <h1 style={styles.title}>📖 Birthday Scrapbook</h1>
+
+      <div style={styles.book}>
+        {pages.map((p) => (
+          <div key={p.id} style={styles.page}>
+            <div style={styles.polaroid}>
+              <div style={styles.photoPlaceholder}>
+                Photo {p.id}
+              </div>
+              <span style={styles.tape}>📌</span>
+            </div>
+
+            <div style={styles.quoteCard}>
+              <p style={styles.quote}>{p.quote}</p>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
+
+const styles = {
+  bg: {
+    minHeight: "100vh",
+    padding: "40px 20px",
+    background: "linear-gradient(180deg, #fdf6f0, #f7efe9)",
+    fontFamily: "Georgia, serif"
+  },
+  title: {
+    textAlign: "center",
+    marginBottom: "30px",
+    fontSize: "36px"
+  },
+  book: {
+    maxWidth: "900px",
+    margin: "0 auto",
+    display: "grid",
+    gridTemplateColumns: "1fr 1fr",
+    gap: "24px"
+  },
+  page: {
+    background: "#fff",
+    padding: "20px",
+    borderRadius: "18px",
+    boxShadow: "0 10px 25px rgba(0,0,0,0.08)"
+  },
+  polaroid: {
+    background: "#fff",
+    padding: "12px",
+    borderRadius: "10px",
+    boxShadow: "0 6px 12px rgba(0,0,0,0.12)",
+    position: "relative"
+  },
+  photoPlaceholder: {
+    height: "200px",
+    background: "#e9dfd7",
+    borderRadius: "6px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    color: "#6b5b53",
+    fontSize: "18px"
+  },
+  tape: {
+    position: "absolute",
+    top: "-10px",
+    right: "10px",
+    transform: "rotate(8deg)"
+  },
+  quoteCard: {
+    marginTop: "16px",
+    background: "#f3e6dd",
+    padding: "14px",
+    borderRadius: "14px"
+  },
+  quote: {
+    fontSize: "16px",
+    lineHeight: 1.4
+  }
+};
