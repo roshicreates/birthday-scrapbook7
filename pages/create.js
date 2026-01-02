@@ -5,14 +5,29 @@ export default function Create() {
     {
       id: 1,
       quote: "To the one who makes every day brighter ✨",
+      image: null,
       active: false
     },
     {
       id: 2,
       quote: "Another year of memories, laughs & love 💕",
+      image: null,
       active: false
     }
   ]);
+
+  function handleImageUpload(e, id) {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const url = URL.createObjectURL(file);
+
+    setPages(prev =>
+      prev.map(p =>
+        p.id === id ? { ...p, image: url, active: true } : p
+      )
+    );
+  }
 
   return (
     <div style={styles.bg}>
@@ -25,26 +40,41 @@ export default function Create() {
             className="scrap-page"
             style={{
               ...styles.page,
-              transform: p.active ? "scale(1.04)" : "scale(1)",
+              transform: p.active ? "scale(1.05)" : "scale(1)",
               boxShadow: p.active
-                ? "0 22px 45px rgba(0,0,0,0.18)"
+                ? "0 24px 50px rgba(0,0,0,0.2)"
                 : "0 10px 25px rgba(0,0,0,0.08)"
             }}
             onClick={() =>
-              setPages((prev) =>
-                prev.map((page) =>
-                  page.id === p.id
-                    ? { ...page, active: !page.active }
-                    : page
+              setPages(prev =>
+                prev.map(pg =>
+                  pg.id === p.id
+                    ? { ...pg, active: !pg.active }
+                    : pg
                 )
               )
             }
           >
-            {/* Polaroid */}
+            {/* Photo */}
             <div style={styles.polaroid}>
-              <div style={styles.photoPlaceholder}>
-                Photo {p.id}
-              </div>
+              {p.image ? (
+                <img
+                  src={p.image}
+                  alt="uploaded"
+                  style={styles.photo}
+                  className="photo-pop"
+                />
+              ) : (
+                <label style={styles.uploadBox}>
+                  Upload Photo
+                  <input
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    onChange={(e) => handleImageUpload(e, p.id)}
+                  />
+                </label>
+              )}
               <span style={styles.pin}>📌</span>
             </div>
 
@@ -94,7 +124,7 @@ const styles = {
     boxShadow: "0 6px 14px rgba(0,0,0,0.12)",
     position: "relative"
   },
-  photoPlaceholder: {
+  uploadBox: {
     height: "200px",
     background: "#e8ded6",
     borderRadius: "8px",
@@ -102,7 +132,14 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
     color: "#6b5b53",
-    fontSize: "18px"
+    fontSize: "16px",
+    cursor: "pointer"
+  },
+  photo: {
+    width: "100%",
+    height: "200px",
+    objectFit: "cover",
+    borderRadius: "8px"
   },
   pin: {
     position: "absolute",
@@ -122,14 +159,21 @@ const styles = {
   }
 };
 
-/* ---------- HOVER EFFECT ---------- */
+/* ---------- ANIMATIONS ---------- */
 
 if (typeof document !== "undefined") {
   const style = document.createElement("style");
   style.innerHTML = `
     .scrap-page:hover {
-      transform: scale(1.04);
-      box-shadow: 0 22px 45px rgba(0,0,0,0.2);
+      transform: scale(1.05);
+      box-shadow: 0 24px 50px rgba(0,0,0,0.22);
+    }
+    .photo-pop {
+      animation: pop 0.45s ease-out;
+    }
+    @keyframes pop {
+      0% { transform: scale(0.9); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
     }
   `;
   document.head.appendChild(style);
