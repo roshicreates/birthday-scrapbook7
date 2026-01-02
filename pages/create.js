@@ -1,4 +1,6 @@
+import { db } from "../lib/firebase";
 export default function Create() {
+  console.log("Firebase connected:", db);
   return (
     <div style={{
       minHeight: "100vh",
