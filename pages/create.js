@@ -19,7 +19,6 @@ export default function Create() {
   function handleImageUpload(e, id) {
     const file = e.target.files[0];
     if (!file) return;
-
     const url = URL.createObjectURL(file);
 
     setPages(prev =>
@@ -40,10 +39,7 @@ export default function Create() {
             className="scrap-page"
             style={{
               ...styles.page,
-              transform: p.active ? "scale(1.05)" : "scale(1)",
-              boxShadow: p.active
-                ? "0 24px 50px rgba(0,0,0,0.2)"
-                : "0 10px 25px rgba(0,0,0,0.08)"
+              transform: p.active ? "scale(1.05)" : "scale(1)"
             }}
             onClick={() =>
               setPages(prev =>
@@ -55,15 +51,16 @@ export default function Create() {
               )
             }
           >
-            {/* Photo */}
+            {/* 🎂 Birthday Sticker */}
+            <span style={styles.birthdaySticker}>🎂 Happy Birthday</span>
+
+            {/* 🦋 Butterfly */}
+            <span style={styles.butterfly}>🦋</span>
+
+            {/* 📸 Polaroid */}
             <div style={styles.polaroid}>
               {p.image ? (
-                <img
-                  src={p.image}
-                  alt="uploaded"
-                  style={styles.photo}
-                  className="photo-pop"
-                />
+                <img src={p.image} alt="" style={styles.photo} className="photo-pop" />
               ) : (
                 <label style={styles.uploadBox}>
                   Upload Photo
@@ -78,10 +75,13 @@ export default function Create() {
               <span style={styles.pin}>📌</span>
             </div>
 
-            {/* Quote */}
+            {/* ✍️ Quote */}
             <div style={styles.quoteCard}>
               <p style={styles.quote}>{p.quote}</p>
             </div>
+
+            {/* 🏷️ Since Tag */}
+            <span style={styles.sinceTag}>Since 2014 💕</span>
           </div>
         ))}
       </div>
@@ -108,15 +108,48 @@ const styles = {
     margin: "0 auto",
     display: "grid",
     gridTemplateColumns: "1fr 1fr",
-    gap: "26px"
+    gap: "30px"
   },
   page: {
-    background: "#ffffff",
-    padding: "22px",
-    borderRadius: "20px",
+    background: "#fff",
+    padding: "26px",
+    borderRadius: "22px",
+    position: "relative",
     cursor: "pointer",
+    boxShadow: "0 14px 30px rgba(0,0,0,0.12)",
     transition: "all 0.35s ease"
   },
+
+  /* Stickers */
+  birthdaySticker: {
+    position: "absolute",
+    top: "-14px",
+    left: "20px",
+    background: "#f7d046",
+    padding: "6px 12px",
+    borderRadius: "14px",
+    fontSize: "14px",
+    transform: "rotate(-4deg)",
+    boxShadow: "0 4px 10px rgba(0,0,0,0.18)"
+  },
+  butterfly: {
+    position: "absolute",
+    right: "18px",
+    top: "60px",
+    fontSize: "28px",
+    transform: "rotate(8deg)"
+  },
+  sinceTag: {
+    position: "absolute",
+    bottom: "-12px",
+    left: "30px",
+    background: "#f3e6dd",
+    padding: "6px 16px",
+    borderRadius: "12px",
+    fontSize: "13px",
+    transform: "rotate(-2deg)"
+  },
+
   polaroid: {
     background: "#fff",
     padding: "12px",
@@ -132,7 +165,6 @@ const styles = {
     alignItems: "center",
     justifyContent: "center",
     color: "#6b5b53",
-    fontSize: "16px",
     cursor: "pointer"
   },
   photo: {
@@ -148,7 +180,7 @@ const styles = {
     transform: "rotate(10deg)"
   },
   quoteCard: {
-    marginTop: "16px",
+    marginTop: "18px",
     background: "#f3e6dd",
     padding: "14px",
     borderRadius: "14px"
