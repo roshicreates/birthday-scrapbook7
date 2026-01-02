@@ -1,9 +1,17 @@
 import { useState } from "react";
 
 export default function Create() {
-  const [pages] = useState([
-    { id: 1, quote: "To the one who makes every day brighter ✨" },
-    { id: 2, quote: "Another year of memories, laughs & love 💕" }
+  const [pages, setPages] = useState([
+    {
+      id: 1,
+      quote: "To the one who makes every day brighter ✨",
+      active: false
+    },
+    {
+      id: 2,
+      quote: "Another year of memories, laughs & love 💕",
+      active: false
+    }
   ]);
 
   return (
@@ -12,15 +20,35 @@ export default function Create() {
 
       <div style={styles.book}>
         {pages.map((p) => (
-          <div key={p.id} style={styles.page} 
-          className="flip">
+          <div
+            key={p.id}
+            className="scrap-page"
+            style={{
+              ...styles.page,
+              transform: p.active ? "scale(1.04)" : "scale(1)",
+              boxShadow: p.active
+                ? "0 22px 45px rgba(0,0,0,0.18)"
+                : "0 10px 25px rgba(0,0,0,0.08)"
+            }}
+            onClick={() =>
+              setPages((prev) =>
+                prev.map((page) =>
+                  page.id === p.id
+                    ? { ...page, active: !page.active }
+                    : page
+                )
+              )
+            }
+          >
+            {/* Polaroid */}
             <div style={styles.polaroid}>
               <div style={styles.photoPlaceholder}>
                 Photo {p.id}
               </div>
-              <span style={styles.tape}>📌</span>
+              <span style={styles.pin}>📌</span>
             </div>
 
+            {/* Quote */}
             <div style={styles.quoteCard}>
               <p style={styles.quote}>{p.quote}</p>
             </div>
@@ -30,6 +58,8 @@ export default function Create() {
     </div>
   );
 }
+
+/* ---------- STYLES ---------- */
 
 const styles = {
   bg: {
@@ -48,36 +78,37 @@ const styles = {
     margin: "0 auto",
     display: "grid",
     gridTemplateColumns: "1fr 1fr",
-    gap: "24px"
+    gap: "26px"
   },
   page: {
-    background: "#fff",
-    padding: "20px",
-    borderRadius: "18px",
-    boxShadow: "0 10px 25px rgba(0,0,0,0.08)"
+    background: "#ffffff",
+    padding: "22px",
+    borderRadius: "20px",
+    cursor: "pointer",
+    transition: "all 0.35s ease"
   },
   polaroid: {
     background: "#fff",
     padding: "12px",
-    borderRadius: "10px",
-    boxShadow: "0 6px 12px rgba(0,0,0,0.12)",
+    borderRadius: "12px",
+    boxShadow: "0 6px 14px rgba(0,0,0,0.12)",
     position: "relative"
   },
   photoPlaceholder: {
     height: "200px",
-    background: "#e9dfd7",
-    borderRadius: "6px",
+    background: "#e8ded6",
+    borderRadius: "8px",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     color: "#6b5b53",
     fontSize: "18px"
   },
-  tape: {
+  pin: {
     position: "absolute",
-    top: "-10px",
-    right: "10px",
-    transform: "rotate(8deg)"
+    top: "-12px",
+    right: "12px",
+    transform: "rotate(10deg)"
   },
   quoteCard: {
     marginTop: "16px",
@@ -90,17 +121,15 @@ const styles = {
     lineHeight: 1.4
   }
 };
-// simple page-flip effect
+
+/* ---------- HOVER EFFECT ---------- */
+
 if (typeof document !== "undefined") {
   const style = document.createElement("style");
   style.innerHTML = `
-    .flip {
-      transition: transform 0.6s ease, box-shadow 0.6s ease;
-      transform-origin: left center;
-    }
-    .flip:hover {
-      transform: rotateY(-8deg);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    .scrap-page:hover {
+      transform: scale(1.04);
+      box-shadow: 0 22px 45px rgba(0,0,0,0.2);
     }
   `;
   document.head.appendChild(style);
