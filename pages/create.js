@@ -12,7 +12,8 @@ export default function Create() {
 
       <div style={styles.book}>
         {pages.map((p) => (
-          <div key={p.id} style={styles.page}>
+          <div key={p.id} style={styles.page} 
+          className="flip">
             <div style={styles.polaroid}>
               <div style={styles.photoPlaceholder}>
                 Photo {p.id}
@@ -89,3 +90,18 @@ const styles = {
     lineHeight: 1.4
   }
 };
+// simple page-flip effect
+if (typeof document !== "undefined") {
+  const style = document.createElement("style");
+  style.innerHTML = `
+    .flip {
+      transition: transform 0.6s ease, box-shadow 0.6s ease;
+      transform-origin: left center;
+    }
+    .flip:hover {
+      transform: rotateY(-8deg);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    }
+  `;
+  document.head.appendChild(style);
+}
