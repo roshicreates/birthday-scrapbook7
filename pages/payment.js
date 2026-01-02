@@ -1,4 +1,38 @@
+import { useState } from "react";
+import { collection, addDoc } from "firebase/firestore";
+import { db } from "../lib/firebase";
+
 export default function Payment() {
+  const [email, setEmail] = useState("");
+  const [txn, setTxn] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function handlePayment() {
+    if (!email || !txn) {
+      alert("Please fill all fields");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      await addDoc(collection(db, "payments"), {
+        email: email,
+        transactionId: txn,
+        used: false,
+        createdAt: new Date()
+      });
+
+      alert("Payment recorded successfully 🎉");
+      window.location.href = "/create";
+    } catch (error) {
+      alert("Something went wrong. Try again.");
+      console.error(error);
+    }
+
+    setLoading(false);
+  }
+
   return (
     <div style={{
       minHeight: "100vh",
@@ -6,38 +40,45 @@ export default function Payment() {
       background: "#fffaf5",
       fontFamily: "Georgia, serif"
     }}>
-      <h2 style={{ fontSize: "32px" }}>💳 Payment</h2>
+      <h2>💳 Payment</h2>
 
-      <p style={{ maxWidth: "500px", fontSize: "18px" }}>
-        Pay a small amount to create a beautiful,
-        Pinterest-style digital birthday scrapbook.
-      </p>
+      <p>Pay ₹20 and enter details below</p>
 
       <div style={{
-        marginTop: "30px",
-        padding: "20px",
+        maxWidth: "360px",
         background: "#f3e5dc",
-        borderRadius: "16px",
-        maxWidth: "360px"
+        padding: "20px",
+        borderRadius: "16px"
       }}>
-        <p><strong>Price:</strong> ₹20</p>
-        <p>UPI payment will be added here.</p>
-      </div>
+        <input
+          placeholder="Email"
+          value={email}
+          onChange={e => setEmail(e.target.value)}
+          style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
+        />
 
-      <a
-        href="/create"
-        style={{
-          display: "inline-block",
-          marginTop: "30px",
-          padding: "12px 20px",
-          background: "#d8b4a0",
-          color: "#000",
-          textDecoration: "none",
-          borderRadius: "12px"
-        }}
-      >
-        I’ve Paid →
-      </a>
+        <input
+          placeholder="UPI Transaction ID"
+          value={txn}
+          onChange={e => setTxn(e.target.value)}
+          style={{ width: "100%", padding: "10px", marginBottom: "10px" }}
+        />
+
+        <button
+          onClick={handlePayment}
+          disabled={loading}
+          style={{
+            width: "100%",
+            padding: "12px",
+            background: "#d8b4a0",
+            border: "none",
+            borderRadius: "12px",
+            cursor: "pointer"
+          }}
+        >
+          {loading ? "Saving..." : "I have paid"}
+        </button>
+      </div>
     </div>
   );
 }
