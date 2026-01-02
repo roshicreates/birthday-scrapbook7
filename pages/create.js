@@ -1,5 +1,6 @@
 import React from "react";
-import { Stage, Layer, Rect, Text } from "react-konva";
+import { Stage, Layer, Rect, Text } from
+  "react-konva";
 
 export default function CreateScrapbook() {
   return (
