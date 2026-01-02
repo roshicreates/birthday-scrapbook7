@@ -1,175 +1,137 @@
-import { useState } from "react";
+import React from "react";
+import { Stage, Layer, Rect, Text } from "react-konva";
 
-export default function Create() {
+export default function CreateScrapbook() {
   return (
-    <div style={styles.outer}>
-      <h1 style={styles.heading}>📖 Birthday Scrapbook</h1>
+    <div style={styles.wrapper}>
+      <h1 style={styles.title}>📖 Birthday Scrapbook</h1>
 
       {/* BOOK */}
       <div style={styles.book}>
-        
         {/* LEFT PAGE */}
         <div style={styles.page}>
-          <span style={styles.washiTop}>🎀</span>
+          <Stage width={420} height={520}>
+            <Layer>
+              {/* Paper */}
+              <Rect
+                x={0}
+                y={0}
+                width={420}
+                height={520}
+                fill="#f4eadc"
+                cornerRadius={8}
+              />
 
-          <div style={{ ...styles.polaroid, transform: "rotate(-3deg)" }}>
-            <div style={styles.photoPlaceholder}>Photo</div>
-            <span style={styles.pin}>📌</span>
-          </div>
+              {/* Placeholder photo */}
+              <Rect
+                x={90}
+                y={90}
+                width={240}
+                height={180}
+                fill="#ddd"
+                cornerRadius={6}
+              />
+              <Text
+                text="Add Photo"
+                x={165}
+                y={170}
+                fontSize={16}
+                fill="#777"
+              />
 
-          <div style={{ ...styles.quoteStrip, transform: "rotate(1deg)" }}>
-            To the one who makes every day brighter ✨
-          </div>
-
-          <span style={styles.stickerStar}>⭐</span>
+              {/* Quote */}
+              <Text
+                text="Add your quote here ✨"
+                x={60}
+                y={310}
+                width={300}
+                align="center"
+                fontSize={18}
+                fill="#555"
+              />
+            </Layer>
+          </Stage>
         </div>
+
+        {/* CENTER FOLD */}
+        <div style={styles.fold} />
 
         {/* RIGHT PAGE */}
         <div style={styles.page}>
-          <span style={styles.washiTop}>🎀</span>
+          <Stage width={420} height={520}>
+            <Layer>
+              <Rect
+                x={0}
+                y={0}
+                width={420}
+                height={520}
+                fill="#f4eadc"
+                cornerRadius={8}
+              />
 
-          <div style={{ ...styles.polaroid, transform: "rotate(2deg)" }}>
-            <div style={styles.photoPlaceholder}>Photo</div>
-            <span style={styles.pin}>📌</span>
-          </div>
+              <Rect
+                x={90}
+                y={90}
+                width={240}
+                height={180}
+                fill="#ddd"
+                cornerRadius={6}
+              />
+              <Text
+                text="Add Photo"
+                x={165}
+                y={170}
+                fontSize={16}
+                fill="#777"
+              />
 
-          <div style={{ ...styles.quoteStrip, transform: "rotate(-1deg)" }}>
-            Another year of memories, laughs & love 💕
-          </div>
-
-          <span style={styles.stickerGift}>🎁</span>
-          <span style={styles.butterfly}>🦋</span>
+              <Text
+                text="Another memory 💛"
+                x={60}
+                y={310}
+                width={300}
+                align="center"
+                fontSize={18}
+                fill="#555"
+              />
+            </Layer>
+          </Stage>
         </div>
-
       </div>
     </div>
   );
 }
 
-/* ---------------- STYLES ---------------- */
-
 const styles = {
-  outer: {
+  wrapper: {
     minHeight: "100vh",
-    padding: "40px 20px",
-    background: "#f5efe6",
-    fontFamily: "Georgia, serif"
-  },
-
-  heading: {
-    textAlign: "center",
-    marginBottom: "30px",
-    fontSize: "36px"
-  },
-
-  /* BOOK */
-  book: {
-    maxWidth: "1100px",
-    margin: "0 auto",
-    background: "#e8dccf",
-    borderRadius: "20px",
-    padding: "40px",
-    display: "grid",
-    gridTemplateColumns: "1fr 1fr",
-    gap: "40px",
-    boxShadow: "0 30px 60px rgba(0,0,0,0.25)",
-    backgroundImage:
-      "linear-gradient(0deg, rgba(255,255,255,0.2), rgba(255,255,255,0.2)), repeating-linear-gradient(45deg, rgba(0,0,0,0.03), rgba(0,0,0,0.03) 2px, transparent 2px, transparent 6px)"
-  },
-
-  /* PAGE */
-  page: {
-    background: "#fdfaf5",
-    borderRadius: "14px",
-    padding: "30px",
-    position: "relative",
-    boxShadow: "inset 0 0 20px rgba(0,0,0,0.05)"
-  },
-
-  /* POLAROID */
-  polaroid: {
-    background: "#fff",
-    padding: "12px",
-    width: "80%",
-    margin: "0 auto",
-    borderRadius: "8px",
-    boxShadow: "0 10px 25px rgba(0,0,0,0.2)",
-    position: "relative"
-  },
-
-  photoPlaceholder: {
-    height: "220px",
-    background: "#d6ccc2",
-    borderRadius: "6px",
+    background: "#e6c8a0",
     display: "flex",
+    flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
-    color: "#6b5b53",
-    fontSize: "18px"
+    paddingTop: 30,
   },
-
-  pin: {
-    position: "absolute",
-    top: "-14px",
-    right: "14px",
-    transform: "rotate(10deg)"
+  title: {
+    fontFamily: "'Brush Script MT', cursive",
+    fontSize: 36,
+    marginBottom: 20,
   },
-
-  /* QUOTE */
-  quoteStrip: {
-    marginTop: "26px",
-    background: "#f1e4d4",
-    padding: "12px 18px",
-    borderRadius: "10px",
-    fontSize: "16px",
-    width: "85%"
+  book: {
+    display: "flex",
+    background: "#5b4636",
+    padding: 25,
+    borderRadius: 14,
+    boxShadow: "0 25px 60px rgba(0,0,0,0.35)",
   },
-
-  /* WASHI */
-  washiTop: {
-    position: "absolute",
-    top: "-14px",
-    left: "50%",
-    transform: "translateX(-50%) rotate(-2deg)",
-    fontSize: "26px"
+  page: {
+    background: "#f4eadc",
+    padding: 10,
+    borderRadius: 10,
   },
-
-  /* STICKERS */
-  stickerStar: {
-    position: "absolute",
-    bottom: "30px",
-    left: "30px",
-    fontSize: "26px",
-    transform: "rotate(-10deg)"
+  fold: {
+    width: 18,
+    background: "linear-gradient(to right, #3a2a1f, #6d4c41)",
+    margin: "0 10px",
+    borderRadius: 6,
   },
-
-  stickerGift: {
-    position: "absolute",
-    bottom: "30px",
-    right: "40px",
-    fontSize: "26px",
-    transform: "rotate(8deg)"
-  },
-
-  butterfly: {
-    position: "absolute",
-    top: "100px",
-    right: "30px",
-    fontSize: "28px",
-    animation: "float 3s ease-in-out infinite"
-  }
 };
-
-/* -------------- ANIMATION -------------- */
-
-if (typeof document !== "undefined") {
-  const style = document.createElement("style");
-  style.innerHTML = `
-    @keyframes float {
-      0% { transform: translateY(0) rotate(5deg); }
-      50% { transform: translateY(-6px) rotate(-5deg); }
-      100% { transform: translateY(0) rotate(5deg); }
-    }
-  `;
-  document.head.appendChild(style);
-}
