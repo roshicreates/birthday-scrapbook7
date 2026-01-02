@@ -1,6 +1,9 @@
-import React from "react";
-import { Stage, Layer, Rect, Text } from
-  "react-konva";
+import dynamic from "next/dynamic";
+
+const Stage = dynamic(() => import("react-konva").then(m => m.Stage), { ssr: false });
+const Layer = dynamic(() => import("react-konva").then(m => m.Layer), { ssr: false });
+const Rect = dynamic(() => import("react-konva").then(m => m.Rect), { ssr: false });
+const Text = dynamic(() => import("react-konva").then(m => m.Text), { ssr: false });
 
 export default function CreateScrapbook() {
   return (
